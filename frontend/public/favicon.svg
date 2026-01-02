@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Eye Outline -->
+  <path d="M4 16C4 16 9 7 16 7C23 7 28 16 28 16C28 16 23 25 16 25C9 25 4 16 4 16Z" stroke="#1e293b" stroke-width="2.5" stroke-linejoin="round" />
+  
+  <!-- Integrated Bar Chart -->
+  <rect x="11" y="15" width="2.5" height="5" rx="0.8" fill="#0d9488" />
+  <rect x="15.5" y="11" width="2.5" height="9" rx="0.8" fill="#0d9488" />
+  <rect x="20" y="17" width="2.5" height="3" rx="0.8" fill="#0d9488" />
+</svg>
