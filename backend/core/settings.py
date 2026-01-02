@@ -29,9 +29,9 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-)x#yszf(fj&b=f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,onrender.com').split(',')
-if not DEBUG:
-    ALLOWED_HOSTS.append('.onrender.com')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com').split(',')
+if 'vendoriq-backend-d6sb.onrender.com' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('vendoriq-backend-d6sb.onrender.com')
 
 
 # Application definition
