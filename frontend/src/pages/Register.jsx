@@ -20,7 +20,13 @@ export default function Register() {
       await register(formData);
       navigate('/login');
     } catch (err) {
-      setError('Registration failed. Email might already be in use.');
+      console.error('Registration error:', err);
+      const message = err.response?.data 
+        ? Object.entries(err.response.data)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join(', ')
+        : 'Registration failed. Please check your connection.';
+      setError(message);
     }
   };
 
