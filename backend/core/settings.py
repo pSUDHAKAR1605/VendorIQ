@@ -79,7 +79,7 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'vendors.Vendor'
 
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173').split(',')
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173,https://vendoriq-frontend.vercel.app').split(',')
 CORS_ALLOW_CREDENTIALS = True
 
 # For development fallback
