@@ -9,7 +9,7 @@ const PriceComparison = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get('/dashboard/');
+        const response = await api.get('dashboard/');
         setData(response.data);
       } catch (error) {
         console.error('Error fetching price comparison:', error);

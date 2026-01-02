@@ -22,7 +22,7 @@ const Sales = () => {
 
   const fetchSales = async () => {
     try {
-      const response = await api.get('/sales/');
+      const response = await api.get('sales/');
       setSales(response.data);
     } catch (error) {
       console.error('Error fetching sales:', error);
@@ -33,7 +33,7 @@ const Sales = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await api.get('/products/');
+      const response = await api.get('products/');
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -56,7 +56,7 @@ const Sales = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/sales/', formData);
+      await api.post('sales/', formData);
       setIsModalOpen(false);
       setFormData({ product: '', quantity: '', unit_price: '' });
       fetchSales();

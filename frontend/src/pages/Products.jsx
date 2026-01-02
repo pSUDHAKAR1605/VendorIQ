@@ -28,7 +28,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await api.get('/products/');
+      const response = await api.get('products/');
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -46,9 +46,9 @@ const Products = () => {
     e.preventDefault();
     try {
       if (editingProduct) {
-        await api.put(`/products/${editingProduct.id}/`, formData);
+        await api.put(`products/${editingProduct.id}/`, formData);
       } else {
-        await api.post('/products/', formData);
+        await api.post('products/', formData);
       }
       setIsModalOpen(false);
       setEditingProduct(null);
@@ -84,7 +84,7 @@ const Products = () => {
   const handleDelete = async () => {
     if (!productToDelete) return;
     try {
-      await api.delete(`/products/${productToDelete}/`);
+      await api.delete(`products/${productToDelete}/`);
       fetchProducts();
       setToast({ message: 'Product deleted successfully!', type: 'success' });
     } catch (error) {
