@@ -82,6 +82,11 @@ AUTH_USER_MODEL = 'vendors.Vendor'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://vendoriq-backend-d6sb.onrender.com',
+    'https://*.onrender.com',
+]
+
 from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
