@@ -79,12 +79,8 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'vendors.Vendor'
 
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173,https://vendoriq-frontend.vercel.app').split(',')
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-
-# For development fallback
-if DEBUG:
-    CORS_ALLOW_ALL_ORIGINS = True
 
 from datetime import timedelta
 SIMPLE_JWT = {
@@ -169,3 +165,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Whitenoise compression and caching
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Render settings
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = os.environ.get('DJANGO_SECURE_SSL_REDIRECT', 'False') == 'True'

@@ -1,7 +1,7 @@
+import { TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { TrendingUp } from 'lucide-react';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -21,11 +21,21 @@ export default function Register() {
       navigate('/login');
     } catch (err) {
       console.error('Registration error:', err);
-      const message = err.response?.data 
-        ? Object.entries(err.response.data)
-            .map(([key, value]) => `${key}: ${value}`)
-            .join(', ')
-        : 'Registration failed. Please check your connection.';
+      let message = 'Registration failed. ';
+      if (err.response) {
+        // Backend returned an error
+        message += err.response.data 
+          ? Object.entries(err.response.data)
+              .map(([key, value]) => `${key}: ${value}`)
+              .join(', ')
+          : 'Server error.';
+      } else if (err.request) {
+        // Request was made but no response received
+        message += 'No response from server.';
+      } else {
+        // Something else happened
+        message += err.message;
+      }
       setError(message);
     }
   };
