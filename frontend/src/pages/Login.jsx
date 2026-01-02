@@ -7,11 +7,14 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError('');
     try {
       await login(email, password);
       navigate('/dashboard');
@@ -21,11 +24,13 @@ export default function Login() {
       if (err.response) {
         message += err.response.data?.detail || 'Invalid email or password';
       } else if (err.request) {
-        message += 'No response from server. Check your internet connection ' + api.defaults.baseURL;
+        message += 'No response from server. Check your internet connection or if the backend is running.';
       } else {
         message += err.message;
       }
       setError(message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -71,9 +76,12 @@ export default function Login() {
             </div>
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200"
+              disabled={isSubmitting}
+              className={`w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold transition-colors shadow-lg shadow-indigo-200 ${
+                isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-indigo-700'
+              }`}
             >
-              Sign in
+              {isSubmitting ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
 

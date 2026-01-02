@@ -11,11 +11,14 @@ export default function Register() {
     business_name: '',
   });
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError('');
     try {
       await register(formData);
       navigate('/login');
@@ -31,12 +34,14 @@ export default function Register() {
           : 'Server error.';
       } else if (err.request) {
         // Request was made but no response received
-        message += 'No response from server.';
+        message += 'No response from server. Check your internet connection or if the backend is running.';
       } else {
         // Something else happened
         message += err.message;
       }
       setError(message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -103,9 +108,12 @@ export default function Register() {
             </div>
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 mt-4"
+              disabled={isSubmitting}
+              className={`w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold transition-colors shadow-lg shadow-indigo-200 mt-4 ${
+                isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-indigo-700'
+              }`}
             >
-              Create account
+              {isSubmitting ? 'Creating account...' : 'Create account'}
             </button>
           </form>
 
