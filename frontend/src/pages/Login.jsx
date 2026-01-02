@@ -17,7 +17,14 @@ export default function Login() {
       navigate('/dashboard');
     } catch (err) {
       console.error('Login error:', err);
-      const message = err.response?.data?.detail || 'Invalid email or password';
+      let message = 'Login failed. ';
+      if (err.response) {
+        message += err.response.data?.detail || 'Invalid email or password';
+      } else if (err.request) {
+        message += 'No response from server. Check your internet connection ' + api.defaults.baseURL;
+      } else {
+        message += err.message;
+      }
       setError(message);
     }
   };

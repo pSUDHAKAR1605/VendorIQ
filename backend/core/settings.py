@@ -29,13 +29,42 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-)x#yszf(fj&b=f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com').split(',')
-if 'vendoriq-backend-d6sb.onrender.com' not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append('vendoriq-backend-d6sb.onrender.com')
+ALLOWED_HOSTS = ['*'] # Highly permissive for initial live setup
 
+# Add explicit frontend URLs for CORS and CSRF
+FRONTEND_URLS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'https://vendoriq-backend-d6sb.onrender.com', # Backend itself
+]
+
+# Get from env or use defaults
+EXTRA_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
+if EXTRA_ORIGINS[0]:
+    FRONTEND_URLS.extend(EXTRA_ORIGINS)
+
+CORS_ALLOWED_ORIGINS = FRONTEND_URLS
+CORS_ALLOW_ALL_ORIGINS = True # Keep for now to debug, but CORS_ALLOWED_ORIGINS is more specific
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://vendoriq-backend-d6sb.onrender.com',
+    'https://*.onrender.com',
+    'https://*.vercel.app',
+    'https://*.netlify.app',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+]
+if os.environ.get('CSRF_TRUSTED_ORIGINS'):
+    CSRF_TRUSTED_ORIGINS.extend(os.environ.get('CSRF_TRUSTED_ORIGINS').split(','))
+
+# Cookie Security for Production
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -79,11 +108,7 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'vendors.Vendor'
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
-
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'https://vendoriq-backend-d6sb.onrender.com,https://*.onrender.com').split(',')
-
+# Simple JWT configuration
 from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
