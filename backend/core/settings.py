@@ -82,10 +82,7 @@ AUTH_USER_MODEL = 'vendors.Vendor'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://vendoriq-backend-d6sb.onrender.com',
-    'https://*.onrender.com',
-]
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'https://vendoriq-backend-d6sb.onrender.com,https://*.onrender.com').split(',')
 
 from datetime import timedelta
 SIMPLE_JWT = {
