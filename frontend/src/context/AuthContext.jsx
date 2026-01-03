@@ -9,7 +9,9 @@ export const AuthProvider = ({ children }) => {
 
   const fetchProfile = async () => {
     try {
+      console.log('🚀 Fetching profile from:', api.defaults.baseURL + 'auth/profile/');
       const response = await api.get('auth/profile/');
+      console.log('✅ Profile response:', response.data);
       const userData = {
         email: response.data.email,
         full_name: response.data.full_name,

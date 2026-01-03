@@ -50,13 +50,13 @@ const Analytics = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Best Selling Products */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col">
           <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-indigo-600" />
             Top Products by Quantity
           </h3>
-          <div className="h-[300px] w-full min-h-0">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="flex-1 min-h-[300px] relative w-full">
+            <ResponsiveContainer width="100%" height={300}>
               <BarChart data={data.best_selling}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="product__name" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
@@ -73,13 +73,13 @@ const Analytics = () => {
         </div>
 
         {/* Revenue Contribution */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col">
           <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
             <DollarSign className="w-5 h-5 text-emerald-600" />
             Revenue Contribution
           </h3>
-          <div className="h-[300px] w-full min-h-0">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="flex-1 min-h-[300px] relative w-full">
+            <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
                   data={data.best_selling}

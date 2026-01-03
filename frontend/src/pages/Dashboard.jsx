@@ -89,11 +89,11 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Best Selling Products Chart */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col">
           <h2 className="text-xl font-bold text-slate-900 mb-6">Best Selling Products</h2>
-          <div className="h-[300px] w-full min-h-0">
+          <div className="flex-1 min-h-[300px] relative w-full">
             {data.best_selling.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data.best_selling}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                   <XAxis dataKey="product__name" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />

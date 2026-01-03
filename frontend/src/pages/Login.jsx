@@ -57,6 +57,7 @@ export default function Login() {
               <input
                 type="email"
                 required
+                autoComplete="email"
                 className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all"
                 placeholder="you@example.com"
                 value={email}
@@ -68,6 +69,7 @@ export default function Login() {
               <input
                 type="password"
                 required
+                autoComplete="current-password"
                 className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all"
                 placeholder="••••••••"
                 value={password}
