@@ -15,12 +15,16 @@ router.register(r'products', ProductViewSet, basename='product')
 router.register(r'sales', SaleViewSet, basename='sale')
 
 urlpatterns = [
-    path('', api_root, name='api-root'),
     path('admin/', admin.site.urls),
-    path('api/auth/register/', RegisterView.as_view(), name='register'),
-    path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/auth/profile/', ProfileView.as_view(), name='profile'),
-    path('api/dashboard/', DashboardStatsView.as_view(), name='dashboard'),
-    path('api/', include(router.urls)),
+    # Group all API endpoints under api/
+    path('api/', include([
+        path('', api_root, name='api-root'),
+        path('auth/register/', RegisterView.as_view(), name='register'),
+        path('auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+        path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+        path('auth/profile/', ProfileView.as_view(), name='profile'),
+        path('dashboard/', DashboardStatsView.as_view(), name='dashboard'),
+        path('', include(router.urls)),
+    ])),
+    path('', api_root), # Fallback for root
 ]

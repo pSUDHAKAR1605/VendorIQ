@@ -55,7 +55,7 @@ const Analytics = () => {
             <TrendingUp className="w-5 h-5 text-indigo-600" />
             Top Products by Quantity
           </h3>
-          <div className="h-80">
+          <div className="h-[300px] w-full min-h-0">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.best_selling}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -78,7 +78,7 @@ const Analytics = () => {
             <DollarSign className="w-5 h-5 text-emerald-600" />
             Revenue Contribution
           </h3>
-          <div className="h-80">
+          <div className="h-[300px] w-full min-h-0">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie

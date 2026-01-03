@@ -91,7 +91,7 @@ export default function Dashboard() {
         {/* Best Selling Products Chart */}
         <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
           <h2 className="text-xl font-bold text-slate-900 mb-6">Best Selling Products</h2>
-          <div className="h-80">
+          <div className="h-[300px] w-full min-h-0">
             {data.best_selling.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data.best_selling}>
