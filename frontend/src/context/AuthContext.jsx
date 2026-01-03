@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import api from '../api/axios';
 
 const AuthContext = createContext();
@@ -10,8 +10,11 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      // In a real app, you might fetch user profile here
-      setUser({ email: localStorage.getItem('user_email') });
+      setUser({ 
+        email: localStorage.getItem('user_email'),
+        full_name: localStorage.getItem('user_full_name'),
+        business_name: localStorage.getItem('user_business_name')
+      });
     }
     setLoading(false);
   }, []);
@@ -21,12 +24,31 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('access_token', response.data.access);
     localStorage.setItem('refresh_token', response.data.refresh);
     localStorage.setItem('user_email', email);
-    setUser({ email });
+    
+    // Fetch profile to get business name and full name
+    try {
+      const profileRes = await api.get('auth/profile/');
+      const userData = {
+        email,
+        full_name: profileRes.data.full_name,
+        business_name: profileRes.data.business_name
+      };
+      localStorage.setItem('user_full_name', userData.full_name);
+      localStorage.setItem('user_business_name', userData.business_name);
+      setUser(userData);
+    } catch (profileErr) {
+      console.error('Error fetching profile:', profileErr);
+      setUser({ email });
+    }
+    
     return response.data;
   };
 
   const register = async (userData) => {
     const response = await api.post('auth/register/', userData);
+    // After registration, we have the user data
+    localStorage.setItem('user_full_name', userData.full_name);
+    localStorage.setItem('user_business_name', userData.business_name);
     return response.data;
   };
 
@@ -34,6 +56,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('user_email');
+    localStorage.removeItem('user_full_name');
+    localStorage.removeItem('user_business_name');
     setUser(null);
   };
 

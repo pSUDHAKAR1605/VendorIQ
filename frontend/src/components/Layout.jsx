@@ -39,7 +39,9 @@ export default function Layout({ children }) {
             <TrendingUp className="w-6 h-6 text-indigo-600" />
             <span className="text-xl font-bold text-slate-900">VendorIQ</span>
           </div>
-          <p className="text-xs text-slate-500 font-medium ml-8 uppercase tracking-wider">ABC store</p>
+          <p className="text-xs text-slate-500 font-medium ml-8 uppercase tracking-wider">
+            {user?.business_name || 'VendorIQ Store'}
+          </p>
         </div>
 
         <nav className="flex-1 px-4 space-y-1">
