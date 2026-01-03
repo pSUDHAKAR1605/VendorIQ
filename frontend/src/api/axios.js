@@ -1,14 +1,22 @@
 import axios from 'axios';
 
 const getBaseURL = () => {
+  // Check environment variable first
   const envURL = import.meta.env.VITE_API_URL;
   if (envURL) return envURL.endsWith('/') ? envURL : `${envURL}/`;
+
+  // If we are on localhost, use the local backend as fallback
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return 'http://localhost:8000/api/';
+  }
+  
+  // Production default
   return 'https://vendoriq-backend-d6sb.onrender.com/api/';
 };
 
 const api = axios.create({
   baseURL: getBaseURL(),
-  timeout: 10000,
+  timeout: 10000, 
 });
 
 console.log('API Base URL:', api.defaults.baseURL);

@@ -29,40 +29,14 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-)x#yszf(fj&b=f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*'] # Highly permissive for initial live setup
+ALLOWED_HOSTS = ['*']
 
-# Add explicit frontend URLs for CORS and CSRF
-FRONTEND_URLS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    'https://vendoriq-backend-d6sb.onrender.com', # Backend itself
-]
-
-# Get from env or use defaults
-EXTRA_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
-if EXTRA_ORIGINS[0]:
-    FRONTEND_URLS.extend(EXTRA_ORIGINS)
-
-CORS_ALLOWED_ORIGINS = FRONTEND_URLS
-CORS_ALLOW_ALL_ORIGINS = True # Keep for now to debug, but CORS_ALLOWED_ORIGINS is more specific
-CORS_ALLOW_CREDENTIALS = True
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://vendoriq-backend-d6sb.onrender.com',
-    'https://*.onrender.com',
-    'https://*.vercel.app',
-    'https://*.netlify.app',
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-]
-if os.environ.get('CSRF_TRUSTED_ORIGINS'):
-    CSRF_TRUSTED_ORIGINS.extend(os.environ.get('CSRF_TRUSTED_ORIGINS').split(','))
-
-# Cookie Security for Production
-CSRF_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SECURE = True
+# Simple JWT configuration
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}
 
 # Application definition
 INSTALLED_APPS = [
@@ -94,6 +68,30 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# CORS Settings
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+# CSRF Settings
+CSRF_TRUSTED_ORIGINS = [
+    'https://vendoriq-backend-d6sb.onrender.com',
+    'https://*.onrender.com',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+]
+
+# Cookie Security
+if not DEBUG:
+    CSRF_COOKIE_SAMESITE = 'None'
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SAMESITE = 'None'
+    SESSION_COOKIE_SECURE = True
+else:
+    CSRF_COOKIE_SAMESITE = 'Lax'
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SAMESITE = 'Lax'
+    SESSION_COOKIE_SECURE = False
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -106,14 +104,14 @@ REST_FRAMEWORK = {
     ),
 }
 
-AUTH_USER_MODEL = 'vendors.Vendor'
-
 # Simple JWT configuration
 from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
+
+AUTH_USER_MODEL = 'vendors.Vendor'
 
 ROOT_URLCONF = 'core.urls'
 
@@ -145,11 +143,17 @@ DATABASES = {
     }
 }
 
-# Use PostgreSQL if DATABASE_URL is provided (common in production hosting)
+# Optional: Database support (PostgreSQL or MySQL)
 import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=600)
-if db_from_env:
-    DATABASES['default'].update(db_from_env)
+database_url = os.environ.get('DATABASE_URL')
+if database_url and not any(placeholder in database_url for placeholder in ['postgres://user:password', 'mysql://user:password']):
+    try:
+        # dj_database_url automatically detects postgres:// or mysql://
+        db_from_env = dj_database_url.config(conn_max_age=600)
+        if db_from_env:
+            DATABASES['default'].update(db_from_env)
+    except Exception:
+        pass # Fallback to SQLite
 
 
 # Password validation

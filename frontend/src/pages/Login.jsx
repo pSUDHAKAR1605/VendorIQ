@@ -24,7 +24,7 @@ export default function Login() {
       if (err.response) {
         message += err.response.data?.detail || 'Invalid email or password';
       } else if (err.request) {
-        message += 'No response from server. Check your internet connection or if the backend is running.';
+        message += 'No response from server. Check your internet connection';
       } else {
         message += err.message;
       }

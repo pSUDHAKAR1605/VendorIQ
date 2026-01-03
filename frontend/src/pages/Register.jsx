@@ -34,7 +34,7 @@ export default function Register() {
           : 'Server error.';
       } else if (err.request) {
         // Request was made but no response received
-        message += 'No response from server. Check your internet connection or if the backend is running.';
+        message += 'No response from server. Check your internet connection';
       } else {
         // Something else happened
         message += err.message;
