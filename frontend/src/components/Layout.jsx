@@ -40,7 +40,7 @@ export default function Layout({ children }) {
             <span className="text-xl font-bold text-slate-900">VendorIQ</span>
           </div>
           <p className="text-xs text-slate-500 font-medium ml-8 uppercase tracking-wider">
-            {user?.business_name}
+            {user?.business_name || 'VendorIQ Store'}
           </p>
         </div>
 
