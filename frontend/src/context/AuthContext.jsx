@@ -50,14 +50,39 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const response = await api.post('auth/login/', { email, password });
-    localStorage.setItem('access_token', response.data.access);
-    localStorage.setItem('refresh_token', response.data.refresh);
-    
-    // Fetch profile immediately after login
-    await fetchProfile();
-    
-    return response.data;
+    console.log('🔑 Starting login for:', email);
+    try {
+      const response = await api.post('auth/login/', { email, password });
+      console.log('✅ Login successful, tokens received');
+      
+      localStorage.setItem('access_token', response.data.access);
+      localStorage.setItem('refresh_token', response.data.refresh);
+      localStorage.setItem('user_email', email);
+      
+      // Fetch profile in the background so it doesn't block login
+      console.log('👤 Initiating background profile fetch...');
+      api.get('auth/profile/')
+        .then(profileRes => {
+          console.log('✅ Profile fetched successfully');
+          const userData = {
+            email,
+            full_name: profileRes.data.full_name,
+            business_name: profileRes.data.business_name
+          };
+          localStorage.setItem('user_full_name', userData.full_name || '');
+          localStorage.setItem('user_business_name', userData.business_name || '');
+          setUser(userData);
+        })
+        .catch(profileErr => {
+          console.error('❌ Background profile fetch failed:', profileErr.message);
+          // We already have the email set from earlier
+        });
+      
+      return response.data;
+    } catch (loginErr) {
+      console.error('❌ Login request failed:', loginErr.message);
+      throw loginErr;
+    }
   };
 
   const register = async (userData) => {

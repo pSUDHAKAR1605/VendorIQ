@@ -25,7 +25,9 @@ export default function Register() {
     } catch (err) {
       console.error('Registration error:', err);
       let message = 'Registration failed. ';
-      if (err.response) {
+      if (err.code === 'ECONNABORTED') {
+        message += 'Server took too long to respond (Timeout). ';//This might be due to a database connection issue or a cold start on Render.
+      } else if (err.response) {
         // Backend returned an error
         message += err.response.data 
           ? Object.entries(err.response.data)
@@ -34,7 +36,7 @@ export default function Register() {
           : 'Server error.';
       } else if (err.request) {
         // Request was made but no response received
-        message += 'No response from server. Check your internet connection';
+        message += 'No response from server. Check your internet connection.';
       } else {
         // Something else happened
         message += err.message;

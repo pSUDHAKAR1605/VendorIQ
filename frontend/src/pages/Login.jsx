@@ -21,10 +21,12 @@ export default function Login() {
     } catch (err) {
       console.error('Login error:', err);
       let message = 'Login failed. ';
-      if (err.response) {
+      if (err.code === 'ECONNABORTED') {
+        message += 'Server took too long to respond (Timeout).';//This might be due to a database connection issue or a cold start on Render.
+      } else if (err.response) {
         message += err.response.data?.detail || 'Invalid email or password';
       } else if (err.request) {
-        message += 'No response from server. Check your internet connection';
+        message += 'No response from server. Check your internet connection.';
       } else {
         message += err.message;
       }

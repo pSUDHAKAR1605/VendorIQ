@@ -146,14 +146,15 @@ DATABASES = {
 # Optional: Database support (PostgreSQL or MySQL)
 import dj_database_url
 database_url = os.environ.get('DATABASE_URL')
-if database_url and not any(placeholder in database_url for placeholder in ['postgres://user:password', 'mysql://user:password']):
-    try:
-        # dj_database_url automatically detects postgres:// or mysql://
-        db_from_env = dj_database_url.config(conn_max_age=600)
-        if db_from_env:
-            DATABASES['default'].update(db_from_env)
-    except Exception:
-        pass # Fallback to SQLite
+if database_url:
+    print(f"🚀 Using DATABASE_URL: {database_url.split('@')[-1]}") # Log host only for safety
+    DATABASES['default'] = dj_database_url.config(
+        default=database_url,
+        conn_max_age=0, # Set to 0 for Render to avoid hanging connections
+        ssl_require=True
+    )
+else:
+    print("⚠️ DATABASE_URL not found, falling back to SQLite")
 
 
 # Password validation
