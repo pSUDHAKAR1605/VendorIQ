@@ -59,7 +59,10 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('refresh_token', response.data.refresh);
       localStorage.setItem('user_email', email);
       
-      // Fetch profile in the background so it doesn't block login
+      // Set basic user info immediately so ProtectedRoute allows navigation
+      setUser({ email });
+      
+      // Fetch full profile in the background
       console.log('👤 Initiating background profile fetch...');
       api.get('auth/profile/')
         .then(profileRes => {
