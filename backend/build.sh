@@ -12,7 +12,5 @@ mkdir -p static
 python manage.py collectstatic --no-input
 
 # Run migrations
-# Fake core migrations that usually exist in Supabase/Postgres
-python manage.py migrate contenttypes --fake
-python manage.py migrate auth --fake
-python manage.py migrate --fake-initial
+# Standard migrate command for a clean database
+python manage.py migrate
